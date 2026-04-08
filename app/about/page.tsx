@@ -11,7 +11,7 @@ export default function About() {
             Keep track of all your job applications, interview schedules, and opportunities in one centralized location.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Whether you're actively job hunting or exploring new opportunities, Job Tracker helps you stay organized 
+            Whether you are actively job hunting or exploring new opportunities, Job Tracker helps you stay organized 
             and never miss an important deadline or follow-up.
           </p>
         </div>

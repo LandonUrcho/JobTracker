@@ -10,8 +10,7 @@ export default function Home() {
             Welcome to Job Tracker
           </h1>
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            Stay organized and never miss an opportunity. Track all your job applications, 
-            interview schedules, and opportunities in one centralized place.
+            This is a very generic website we need to change so much of this
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
