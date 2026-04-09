@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navigation from "./components/Navigation";
 import "./globals.css";
+import { initializeDatabase } from "@/lib/db";
+
+// Initialize database on app startup
+initializeDatabase();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
