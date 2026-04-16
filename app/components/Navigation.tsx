@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
-    return pathname === path ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600 hover:text-gray-900';
+    return pathname === path
+      ? "border-b-2 border-blue-600 text-blue-600"
+      : "text-gray-600 hover:text-gray-900";
   };
 
   return (
@@ -22,27 +24,33 @@ export default function Navigation() {
           <div className="flex space-x-8">
             <Link
               href="/dashboard"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive('/dashboard')}`}
+              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/dashboard")}`}
             >
               Dashboard
             </Link>
             <Link
               href="/jobs"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive('/jobs')}`}
+              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/jobs")}`}
             >
               Jobs
             </Link>
             <Link
               href="/add-job"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive('/add-job')}`}
+              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/add-job")}`}
             >
               Add Job
             </Link>
             <Link
               href="/about"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive('/about')}`}
+              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/about")}`}
             >
               About
+            </Link>
+            <Link
+              href="/login"
+              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/about")}`}
+            >
+              Login
             </Link>
           </div>
         </div>

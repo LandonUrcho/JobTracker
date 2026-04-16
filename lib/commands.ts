@@ -2,6 +2,13 @@
 
 import db from "@/lib/db";
 
+type User = {
+  User_ID: number;
+  Full_Name: string;
+  User_Email: string;
+  User_Password: string;
+};
+
 export async function createUser(
   name: string,
   email: string,
@@ -24,6 +31,12 @@ export async function getUserById(id: number) {
   return user;
 }
 
+export async function getUserByEmail(email: string) {
+  const sql = `SELECT * FROM user WHERE User_Email = ?`;
+  const user = db().prepare(sql).get(email) as User;
+  return user;
+}
+
 export async function updateUser(
   id: number,
   name: string,
@@ -39,6 +52,12 @@ export async function deleteUser(id: number) {
   const sql = `DELETE FROM user WHERE User_ID = ?`;
   const info = db().prepare(sql).run(id);
   return info;
+}
+
+export async function getApplicationsByUser(userId: number) {
+  const sql = `SELECT * FROM application WHERE User_ID = ? ORDER BY Date_Created DESC`;
+  const applications = db().prepare(sql).all(userId);
+  return applications;
 }
 
 export async function createApplication(
