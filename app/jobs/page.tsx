@@ -38,9 +38,9 @@ export default function Jobs() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 bg-gray-50">
+      <div className="flex-1 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-foreground-secondary">Loading...</p>
         </div>
       </div>
     );
@@ -49,73 +49,10 @@ export default function Jobs() {
   return (
     <div className="flex-1 bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">
-            Your Job Applications
-          </h1>
-          <h1 className="text-4xl font-bold text-foreground">Your Job Applications</h1>
-        </div>
-
-        {applications.length === 0 ? (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-8 text-center">
-              <p className="text-gray-600 text-lg">No job applications yet.</p>
-              <p className="text-gray-500">
-                Start tracking your job search by adding your first application.
-              </p>
-            </div>
-        <div className="bg-background-secondary rounded-lg shadow border border-border overflow-hidden">
-          <div className="px-6 py-8 text-center">
-            <p className="text-foreground-secondary text-lg">No job applications yet.</p>
-            <p className="text-foreground-tertiary">Start tracking your job search by adding your first application.</p>
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-100 border-b">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Job Title
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Location
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Date Applied
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.map((app) => (
-                  <tr
-                    key={app.Application_ID}
-                    className="border-b hover:bg-gray-50"
-                  >
-                    <td className="px-6 py-4 text-sm text-gray-900">
-                      {app.Job_Title}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {app.Job_Location}
-                    </td>
-                    <td className="px-6 py-4 text-sm">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {app.Current_Status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {app.Date_Applied
-                        ? new Date(app.Date_Applied).toLocaleDateString()
-                        : "N/A"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <h1 className="text-3xl font-bold text-foreground">My Jobs</h1>
+        <p className="text-foreground-secondary">
+          Here are the jobs you've applied to.
+        </p>
       </div>
     </div>
   );

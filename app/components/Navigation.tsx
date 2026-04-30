@@ -21,10 +21,10 @@ export default function Navigation() {
               Job Tracker
             </Link>
           </div>
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-8 ">
             <Link
               href="/dashboard"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/dashboard")}`}
+              className={`text-white py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/dashboard")}`}
             >
               Dashboard
             </Link>
@@ -32,7 +32,7 @@ export default function Navigation() {
             </span>
             <Link
               href="/jobs"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/jobs")}`}
+              className={`text-white py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/jobs")}`}
             >
               Jobs
             </Link>
@@ -40,7 +40,7 @@ export default function Navigation() {
             </span>
             <Link
               href="/add-job"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/add-job")}`}
+              className={`text-white py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/add-job")}`}
             >
               Add Job
             </Link>
@@ -48,13 +48,15 @@ export default function Navigation() {
             </span>
             <Link
               href="/about"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/about")}`}
+              className={`text-white py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/about")}`}
             >
               About
             </Link>
+            <span>|
+            </span>
             <Link
               href="/login"
-              className={`py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/about")}`}
+              className={`text-white py-2 px-1 border-b-2 border-transparent transition-colors ${isActive("/login")}`}
             >
               Login
             </Link>
