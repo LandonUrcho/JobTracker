@@ -24,11 +24,6 @@ export default function Dashboard() {
     const storedUserId = localStorage.getItem("userId");
     const storedUserName = localStorage.getItem("userName");
 
-    if (!storedUserId) {
-      window.location.href = "/login";
-      return;
-    }
-
     const userIdNum = Number(storedUserId);
     setUserId(userIdNum);
     setUserName(storedUserName);

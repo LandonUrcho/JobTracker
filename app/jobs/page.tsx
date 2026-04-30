@@ -21,7 +21,7 @@ export default function Jobs() {
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (!storedUserId) {
-      window.location.href = "/login";
+      //window.location.href = "/login";
       return;
     }
 
@@ -34,7 +34,8 @@ export default function Jobs() {
     });
   }, []);
 
-  if (isLoading) {
+  
+  /*if (isLoading) {
     return (
       <div className="flex-1 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -42,7 +43,7 @@ export default function Jobs() {
         </div>
       </div>
     );
-  }
+  }*/
 
   return (
     <div className="flex-1 bg-background">
