@@ -10,14 +10,14 @@ export default function AddJob() {
   };
 
   return (
-    <div className="flex-1 bg-gray-50">
+    <div className="flex-1 bg-background">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Add New Job Application</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-8">Add New Job Application</h1>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8">
+        <form onSubmit={handleSubmit} className="bg-background-secondary rounded-lg shadow border border-border p-8">
           <div className="grid grid-cols-1 gap-6">
             <div>
-              <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="company" className="block text-sm font-medium text-foreground-secondary mb-2">
                 Company Name
               </label>
               <input
@@ -25,13 +25,13 @@ export default function AddJob() {
                 id="company"
                 name="company"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-background text-foreground border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                 placeholder="e.g., Acme Corporation"
               />
             </div>
 
             <div>
-              <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="position" className="block text-sm font-medium text-foreground-secondary mb-2">
                 Job Position
               </label>
               <input
@@ -39,13 +39,13 @@ export default function AddJob() {
                 id="position"
                 name="position"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-background text-foreground border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                 placeholder="e.g., Senior Engineer"
               />
             </div>
 
             <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="date" className="block text-sm font-medium text-foreground-secondary mb-2">
                 Application Date
               </label>
               <input
@@ -53,18 +53,18 @@ export default function AddJob() {
                 id="date"
                 name="date"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-background text-foreground border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
               />
             </div>
 
             <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="status" className="block text-sm font-medium text-foreground-secondary mb-2">
                 Status
               </label>
               <select
                 id="status"
                 name="status"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-background text-foreground border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
               >
                 <option>Applied</option>
                 <option>Under Review</option>
@@ -75,21 +75,21 @@ export default function AddJob() {
             </div>
 
             <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="notes" className="block text-sm font-medium text-foreground-secondary mb-2">
                 Notes
               </label>
               <textarea
                 id="notes"
                 name="notes"
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-background text-foreground border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                 placeholder="Add any notes about the position or company..."
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full bg-accent text-background font-semibold py-2 rounded-lg hover:bg-accent-hover transition-colors"
             >
               Add Job Application
             </button>

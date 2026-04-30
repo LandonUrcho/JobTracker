@@ -1,57 +1,59 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          <div className="text-6xl mb-4">📊</div>
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Welcome to Job Tracker
-          </h1>
-          <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            This is a very generic website we need to change so much of this
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link
-              href="/dashboard"
-              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Go to Dashboard
-            </Link>
-            <Link
-              href="/add-job"
-              className="px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors"
-            >
-              Add First Job
-            </Link>
+    <div className="flex-1 bg-[url('/background.png')] bg-cover bg-center flex items-center">
+      <div className="flex flex-col justify-center items-start h-full w-[40%] px-8">
+        <div className="text-8xl font-bold text-white m-4"> 
+          Welcome to Job Tracker
+        </div>
+        <div className="text-3xl m-4">
+          Organize and maintain all of your job applications in one centralized location. Track your progress, set reminders, and stay on top of your job search with ease.
+        </div>
+        
+          <Link
+            href="/login"
+            className="text-2xl font-semibold text-neutral-800 hover:text-white hover:scale-101 m-2 px-6 transition-colors"
+          >
+            Get Started &gt;
+          </Link>
+        </div>
+        
+      <div className="flex flex-col gap-4 w-[35%] h-full justify-center pr-16 ml-auto">
+        <div className="bg-background-secondary/80 rounded-lg border border-border p-6 backdrop-blur-sm hover:bg-background-secondary/90 transition-colors flex items-center gap-4">
+          <div className="flex-1">
+            <h3 className="text-2xl font-bold text-foreground mb-2">Track Applications</h3>
+            <p className="text-foreground-secondary text-md">
+              Keep detailed records of every job application including company info, position details, salary expectations, and application dates all in one place.
+            </p>
+          </div>
+          <div className="w-24 h-24 flex-shrink-0 relative">
+            <Image src="/application.jpg" alt="Track Applications" fill className="object-cover rounded" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="text-4xl mb-4">📝</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Track Applications</h3>
-            <p className="text-gray-700">
-              Keep track of every job application with company details, positions, and dates.
+        <div className="bg-background-secondary/80 rounded-lg border border-border p-6 backdrop-blur-sm hover:bg-background-secondary/90 transition-colors flex items-center gap-4">
+          <div className="flex-1">
+            <h3 className="text-2xl font-bold text-foreground mb-2">Schedule Interviews</h3>
+            <p className="text-foreground-secondary text-md">
+              Manage interview dates, times, and locations. Add notes, prepare talking points, and receive reminders to stay organized throughout your job search.
             </p>
           </div>
+          <div className="w-24 h-24 flex-shrink-0 relative">
+            <Image src="/interview.jpg" alt="Schedule Interviews" fill className="object-cover rounded" />
+          </div>
+        </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="text-4xl mb-4">📅</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Manage Interviews</h3>
-            <p className="text-gray-700">
-              Schedule and monitor interview dates and keep detailed notes for each opportunity.
+        <div className="bg-background-secondary/80 rounded-lg border border-border p-6 backdrop-blur-sm hover:bg-background-secondary/90 transition-colors flex items-center gap-4">
+          <div className="flex-1">
+            <h3 className="text-2xl font-bold text-foreground mb-2">Analytics & Insights</h3>
+            <p className="text-foreground-secondary text-md">
+              Visualize your job search progress with comprehensive statistics. Track success rates, identify trends, and optimize your application strategy.
             </p>
           </div>
-
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="text-4xl mb-4">📊</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">View Statistics</h3>
-            <p className="text-gray-700">
-              See your job search progress at a glance with comprehensive dashboard metrics.
-            </p>
+          <div className="w-24 h-24 flex-shrink-0 relative">
+            <Image src="/analytics.jpg" alt="Analytics & Insights" fill className="object-cover rounded" />
           </div>
         </div>
       </div>
