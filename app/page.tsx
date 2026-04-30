@@ -34,6 +34,112 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Create User Section */}
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-12 max-w-md mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Create New User
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter user name"
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                E-Mail
+              </label>
+              <input
+                id="email"
+                type="text"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter user email"
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                password
+              </label>
+              <input
+                id="password  "
+                type="text"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter user password"
+                disabled={loading}
+              />
+            </div>
+
+            {message && (
+              <div
+                className={`p-3 rounded-lg text-sm ${
+                  message.includes("success")
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {message}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+            >
+              {loading ? "Creating..." : "Create User"}
+            </button>
+          </form>
+        </div>
+
+        {/* Users List Section */}
+        {users.length > 0 && (
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-12 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Users</h2>
+            <div className="space-y-3">
+              {users.map((user) => (
+                <div key={user.User_ID} className="bg-gray-50 p-4 rounded-lg">
+                  <div className="font-semibold text-gray-900">
+                    {user.Full_Name}
+                  </div>
+                  <div className="text-sm text-gray-600">{user.User_Email}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="bg-background-secondary/80 rounded-lg border border-border p-6 backdrop-blur-sm hover:bg-background-secondary/90 transition-colors flex items-center gap-4">
           <div className="flex-1">
             <h3 className="text-xl font-bold text-foreground mb-2">Schedule Interviews</h3>
