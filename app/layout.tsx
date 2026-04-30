@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Poppins, IBM_Plex_Mono } from "next/font/google";
 import Navigation from "./components/Navigation";
 import "./globals.css";
+import { initializeDatabase } from "@/lib/db";
+
+// Initialize database on app startup
+initializeDatabase();
 
 const poppins = Poppins({
   variable: "--font-geist-sans",
