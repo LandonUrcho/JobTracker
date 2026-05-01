@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const pathname = usePathname();
-
+  const userID = (localStorage.getItem("userId") || null);
   const isActive = (path: string) => {
     return pathname === path
       ? "text-accent border-b-2 border-accent"
@@ -43,12 +43,23 @@ export default function Navigation() {
               Add Job
             </Link>
             <span>|</span>
-            <Link
-              href="/login"
-              className={`py-2 px-3 transition-all duration-100 ${isActive("/login")}`}
-            >
-              Login
-            </Link>
+            {userID ? (
+              <Link
+                href="/"
+                className={`py-2 px-3 transition-all duration-100 ${isActive("/logout")}`}
+                onClick={() => localStorage.clear()}
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className={`py-2 px-3 transition-all duration-100 ${isActive("/login")}`}
+              >
+                Login
+              </Link>
+            )}
+            
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createUser, getUserByEmail } from "@/lib/commands";
+import { getUserByEmail } from "@/lib/commands";
 import Link from "next/link";
 
 export default function Login() {
@@ -24,7 +24,6 @@ export default function Login() {
     setError("");
     setIsLoading(true);
 
-    // TODO: Replace with actual authentication API call
     try {
       if (!email || !password) {
         setError("Please fill in all fields");
@@ -39,9 +38,6 @@ export default function Login() {
         return;
       }
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
       // Store user ID in localStorage
       localStorage.setItem("userId", user.User_ID.toString());
       localStorage.setItem("userName", user.Full_Name);
@@ -50,18 +46,21 @@ export default function Login() {
       router.push("/dashboard");
     } catch (err) {
       setError("Login failed. Please try again.");
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Login</h1>
+    <div 
+      className="flex items-center justify-center w-full h-screen bg-[url('/background.png')] bg-cover bg-center"
+    >
+      <div className="w-full max-w-md bg-background-secondary rounded-lg shadow-md p-8">
+        <h1 className="text-3xl font-bold text-gray-300 mb-6">Login</h1>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-3 bg-gray-background-secondary border border-red-600 text-red-600 rounded">
             {error}
           </div>
         )}
@@ -70,7 +69,7 @@ export default function Login() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-600 mb-1"
             >
               Email
             </label>
@@ -80,7 +79,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-black"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-white"
               disabled={isLoading}
             />
           </div>
@@ -88,7 +87,7 @@ export default function Login() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-600 mb-1"
             >
               Password
             </label>
@@ -98,7 +97,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-black"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-white"
               disabled={isLoading}
             />
           </div>
@@ -106,17 +105,18 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2 rounded-lg transition duration-200"
+            className="w-full bg-gray-900 hover:cursor-pointer hover:bg-gray-600 disabled:bg-blue-400 text-white font-semibold py-2 rounded-lg transition duration-200"
+            onClick={handleSubmit}
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/signup"
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="text-gray-400 hover:text-white font-medium"
           >
             Sign up
           </Link>
