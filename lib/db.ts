@@ -3,44 +3,11 @@ import path from 'path';
 import fs from 'fs';
 
 let db: Database.Database;
+let isSchemaInitialized = false;
 
-/**
- * Initialize and get database connection
- */
-export function getDatabase(): Database.Database {
-  if (!db) {
-    const dbPath = path.join(process.cwd(), 'data', 'jobtracker.db');
-    
-    // Ensure data directory exists
-    const dataDir = path.dirname(dbPath);
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
+type SqlParameter = string | number | bigint | boolean | Buffer | null;
 
-    db = new Database(dbPath);
-    db.pragma('foreign_keys = ON');
-    db.pragma('journal_mode = WAL');
-  }
-  
-  return db;
-}
-
-/**
- * Close database connection
- */
-export function closeDatabase(): void {
-  if (db) {
-    db.close();
-  }
-}
-
-/**
- * Initialize database schema
- */
-export function initializeDatabase(): void {
-  const database = getDatabase();
-  
-  // Create tables if they don't exist
+function createSchema(database: Database.Database): void {
   database.exec(`
     CREATE TABLE IF NOT EXISTS user (
       User_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,11 +53,56 @@ export function initializeDatabase(): void {
 }
 
 /**
+ * Initialize and get database connection
+ */
+export function getDatabase(): Database.Database {
+  if (!db) {
+    const dbPath = path.join(process.cwd(), 'data', 'jobtracker.db');
+    
+    // Ensure data directory exists
+    const dataDir = path.dirname(dbPath);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    db = new Database(dbPath);
+    db.pragma('foreign_keys = ON');
+    db.pragma('journal_mode = WAL');
+    db.pragma('busy_timeout = 5000');
+  }
+
+  if (!isSchemaInitialized) {
+    createSchema(db);
+    isSchemaInitialized = true;
+  }
+  
+  return db;
+}
+
+/**
+ * Close database connection
+ */
+export function closeDatabase(): void {
+  if (db) {
+    db.close();
+  }
+}
+
+/**
+ * Initialize database schema
+ */
+export function initializeDatabase(): void {
+  const database = getDatabase();
+  createSchema(database);
+  isSchemaInitialized = true;
+}
+
+/**
  * Run a prepared statement
  */
-export function runQuery<T = any>(
+export function runQuery<T = Database.RunResult>(
   sql: string,
-  params: any[] = []
+  params: SqlParameter[] = []
 ): T {
   const database = getDatabase();
   const stmt = database.prepare(sql);
@@ -100,9 +112,9 @@ export function runQuery<T = any>(
 /**
  * Get a single row
  */
-export function getOne<T = any>(
+export function getOne<T = unknown>(
   sql: string,
-  params: any[] = []
+  params: SqlParameter[] = []
 ): T | undefined {
   const database = getDatabase();
   const stmt = database.prepare(sql);
@@ -112,9 +124,9 @@ export function getOne<T = any>(
 /**
  * Get all rows
  */
-export function getAll<T = any>(
+export function getAll<T = unknown>(
   sql: string,
-  params: any[] = []
+  params: SqlParameter[] = []
 ): T[] {
   const database = getDatabase();
   const stmt = database.prepare(sql);

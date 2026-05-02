@@ -15,7 +15,6 @@ type Application = {
 };
 
 export default function Dashboard() {
-  const [userId, setUserId] = useState<number | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,22 +24,21 @@ export default function Dashboard() {
     const storedUserName = localStorage.getItem("userName");
 
     const userIdNum = Number(storedUserId);
-    setUserId(userIdNum);
-    setUserName(storedUserName);
 
     // Fetch user's applications
     getApplicationsByUser(userIdNum).then((apps) => {
       setApplications(apps as Application[]);
+      setUserName(storedUserName);
       setIsLoading(false);
     });
   }, []);
 
   const totalApplications = applications.length;
   const interviewsScheduled = applications.filter(
-    (app) => app.Current_Status === "interview",
+    (app) => app.Current_Status === "interview" || app.Current_Status === "Interview Scheduled",
   ).length;
   const offersReceived = applications.filter(
-    (app) => app.Current_Status === "offer",
+    (app) => app.Current_Status === "offer" || app.Current_Status === "Offer Received",
   ).length;
 
   if (isLoading) {

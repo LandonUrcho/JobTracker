@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getApplicationsByUser } from "@/lib/commands";
 
 type Application = {
   Application_ID: number;
   Job_Title: string;
+  Company_Name: string;
   Job_Location: string;
   Current_Status: string;
   Date_Applied: string;
@@ -15,13 +17,14 @@ type Application = {
 };
 
 export default function Jobs() {
+  const router = useRouter();
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (!storedUserId) {
-      //window.location.href = "/login";
+      router.push("/login");
       return;
     }
 
@@ -32,10 +35,9 @@ export default function Jobs() {
       setApplications(apps as Application[]);
       setIsLoading(false);
     });
-  }, []);
+  }, [router]);
 
-  
-  /*if (isLoading) {
+  if (isLoading) {
     return (
       <div className="flex-1 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -43,7 +45,7 @@ export default function Jobs() {
         </div>
       </div>
     );
-  }*/
+  }
 
   return (
     <div className="flex-1 bg-background">
@@ -83,7 +85,8 @@ export default function Jobs() {
                     className="border-b border-border hover:bg-background-tertiary transition-colors"
                   >
                     <td className="px-6 py-4 text-sm text-foreground">
-                      {app.Job_Title}
+                      <div className="font-medium">{app.Job_Title}</div>
+                      <div className="text-xs text-foreground-tertiary">{app.Company_Name}</div>
                     </td>
                     <td className="px-6 py-4 text-sm text-foreground-secondary">
                       {app.Job_Location}

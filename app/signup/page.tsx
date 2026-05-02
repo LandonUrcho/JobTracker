@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createUser, getUserByEmail } from "@/lib/commands";
-import { create } from "domain";
 
 export default function Signup() {
   type User = {
