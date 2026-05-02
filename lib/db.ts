@@ -49,6 +49,10 @@ function createSchema(database: Database.Database): void {
       Notes TEXT,
       Company_ID INTEGER NOT NULL
     );
+
+    CREATE INDEX IF NOT EXISTS idx_user_user_email ON user (User_Email);
+    CREATE INDEX IF NOT EXISTS idx_application_user_id_date_created ON application (User_ID, Date_Created);
+    CREATE INDEX IF NOT EXISTS idx_contact_company_id ON contact (Company_ID);
   `);
 }
 
