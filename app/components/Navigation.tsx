@@ -2,14 +2,25 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const userID = (localStorage.getItem("userId") || null);
+  const [userID, setUserID] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserID(localStorage.getItem("userId"));
+  }, []);
+
   const isActive = (path: string) => {
     return pathname === path
       ? "text-accent border-b-2 border-accent"
       : "text-foreground-secondary hover:text-foreground hover:border-b-2 hover:border-accent/50";
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setUserID(null);
   };
 
   return (
@@ -47,7 +58,7 @@ export default function Navigation() {
               <Link
                 href="/"
                 className={`py-2 px-3 transition-all duration-100 ${isActive("/logout")}`}
-                onClick={() => localStorage.clear()}
+                onClick={handleLogout}
               >
                 Logout
               </Link>

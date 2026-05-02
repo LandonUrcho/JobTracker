@@ -19,6 +19,13 @@ export default function Jobs() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState({
+    jobTitle: "",
+    jobLocation: "",
+    status: "",
+    dateApplied: "",
+  });
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -51,6 +58,65 @@ export default function Jobs() {
         setIsLoading(false);
       });
   }, [router]);
+
+  const handleDelete = async (applicationId: number) => {
+    if (!confirm("Are you sure you want to delete this application?")) return;
+
+    try {
+      const res = await fetch(`/api/jobs?applicationId=${applicationId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete application.");
+      }
+      setApplications(applications.filter(app => app.Application_ID !== applicationId));
+    } catch (err) {
+      setError("Failed to delete application.");
+    }
+  };
+
+  const handleEdit = (app: Application) => {
+    setEditingId(app.Application_ID);
+    setEditForm({
+      jobTitle: app.Job_Title,
+      jobLocation: app.Job_Location,
+      status: app.Current_Status,
+      dateApplied: app.Date_Applied || "",
+    });
+  };
+
+  const handleSave = async () => {
+    if (!editingId) return;
+
+    try {
+      const res = await fetch("/api/jobs", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: editingId,
+          jobTitle: editForm.jobTitle,
+          jobLocation: editForm.jobLocation,
+          status: editForm.status,
+          dateApplied: editForm.dateApplied || null,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to update application.");
+      }
+      setApplications(applications.map(app =>
+        app.Application_ID === editingId
+          ? { ...app, Job_Title: editForm.jobTitle, Job_Location: editForm.jobLocation, Current_Status: editForm.status, Date_Applied: editForm.dateApplied }
+          : app
+      ));
+      setEditingId(null);
+    } catch (err) {
+      setError("Failed to update application.");
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+  };
 
   if (isLoading) {
     return (
@@ -104,6 +170,9 @@ export default function Jobs() {
                   <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">
                     Date Applied
                   </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -112,13 +181,91 @@ export default function Jobs() {
                     key={app.Application_ID}
                     className="border-b border-border hover:bg-background-tertiary transition-colors"
                   >
-                    <td className="px-6 py-4 text-sm text-foreground">{app.Job_Title}</td>
-                    <td className="px-6 py-4 text-sm text-foreground-secondary">{app.Job_Location}</td>
-                    <td className="px-6 py-4 text-sm">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary-500/20 text-primary-300">{app.Current_Status}</span>
+                    <td className="px-6 py-4 text-sm text-foreground">
+                      {editingId === app.Application_ID ? (
+                        <input
+                          type="text"
+                          value={editForm.jobTitle}
+                          onChange={(e) => setEditForm({ ...editForm, jobTitle: e.target.value })}
+                          className="w-full px-2 py-1 border rounded"
+                        />
+                      ) : (
+                        app.Job_Title
+                      )}
                     </td>
                     <td className="px-6 py-4 text-sm text-foreground-secondary">
-                      {app.Date_Applied ? new Date(app.Date_Applied).toLocaleDateString() : "N/A"}
+                      {editingId === app.Application_ID ? (
+                        <input
+                          type="text"
+                          value={editForm.jobLocation}
+                          onChange={(e) => setEditForm({ ...editForm, jobLocation: e.target.value })}
+                          className="w-full px-2 py-1 border rounded"
+                        />
+                      ) : (
+                        app.Job_Location
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      {editingId === app.Application_ID ? (
+                        <select
+                          value={editForm.status}
+                          onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                          className="w-full px-2 py-1 border rounded bg-white text-black"
+                        >
+                          <option value="In Progress">In Progress</option>
+                          <option value="Applied">Applied</option>
+                          <option value="Interview">Interview</option>
+                          <option value="Offer">Offer</option>
+                          <option value="Rejected">Rejected</option>
+                        </select>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary-500/20 text-primary-300">{app.Current_Status}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-foreground-secondary">
+                      {editingId === app.Application_ID ? (
+                        <input
+                          type="date"
+                          value={editForm.dateApplied}
+                          onChange={(e) => setEditForm({ ...editForm, dateApplied: e.target.value })}
+                          className="w-full px-2 py-1 border rounded"
+                        />
+                      ) : (
+                        app.Date_Applied ? new Date(app.Date_Applied).toLocaleDateString() : "N/A"
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      {editingId === app.Application_ID ? (
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={handleSave}
+                            className="px-3 py-1 bg-green-500 text-white rounded text-xs"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={handleCancel}
+                            className="px-3 py-1 bg-gray-500 text-white rounded text-xs"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleEdit(app)}
+                            className="px-3 py-1 bg-blue-500 text-white rounded text-xs"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(app.Application_ID)}
+                            className="px-3 py-1 bg-red-500 text-white rounded text-xs"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -212,3 +212,21 @@ export async function createContact(
     );
   return info;
 }
+
+export async function updateApplication(
+  applicationId: number,
+  jobTitle: string,
+  jobLocation: string,
+  status: string,
+  dateApplied: string | null,
+) {
+  const sql = `UPDATE application SET Job_Title = ?, Job_Location = ?, Current_Status = ?, Date_Applied = ? WHERE Application_ID = ?`;
+  const info = db().prepare(sql).run(jobTitle, jobLocation, status, dateApplied, applicationId);
+  return info;
+}
+
+export async function deleteApplication(applicationId: number) {
+  const sql = `DELETE FROM application WHERE Application_ID = ?`;
+  const info = db().prepare(sql).run(applicationId);
+  return info;
+}
