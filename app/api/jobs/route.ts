@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
+
 import { getApplicationsByUser, updateApplication, deleteApplication } from "@/lib/commands";
+
+// handles the get request to retrieve all applications for a user
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
+
+  // if userID is missing return error
 
   if (!userId) {
     return NextResponse.json(
@@ -11,6 +16,8 @@ export async function GET(request: Request) {
       { status: 400 },
     );
   }
+
+  // if userID is not a valid number return error
 
   const userIdNum = Number(userId);
   if (!Number.isFinite(userIdNum) || userIdNum <= 0) {
@@ -20,14 +27,20 @@ export async function GET(request: Request) {
     );
   }
 
+  // fetch applications for the user return as json 
+
   const applications = await getApplicationsByUser(userIdNum);
   return NextResponse.json({ applications });
 }
+
+// handles the put request to update an application
 
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
     const { applicationId, jobTitle, jobLocation, status, dateApplied } = body;
+
+    // validate required field are present
 
     if (!applicationId || !jobTitle || !jobLocation || !status) {
       return NextResponse.json(
@@ -36,6 +49,9 @@ export async function PUT(request: Request) {
       );
     }
 
+    // update the application with the provided data and return success message
+    // return error message if update fails
+    
     await updateApplication(applicationId, jobTitle, jobLocation, status, dateApplied);
     return NextResponse.json({ message: "Application updated successfully." });
   } catch (error) {
@@ -46,10 +62,14 @@ export async function PUT(request: Request) {
   }
 }
 
+// handles the delete request for an application
+
 export async function DELETE(request: Request) {
   try {
     const url = new URL(request.url);
     const applicationId = url.searchParams.get("applicationId");
+
+    // check if applicatioID is present and valid
 
     if (!applicationId) {
       return NextResponse.json(
@@ -65,6 +85,8 @@ export async function DELETE(request: Request) {
         { status: 400 },
       );
     }
+
+    // delete the application and return success message, return error message if it fails
 
     await deleteApplication(applicationIdNum);
     return NextResponse.json({ message: "Application deleted successfully." });

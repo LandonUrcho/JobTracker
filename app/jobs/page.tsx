@@ -28,11 +28,16 @@ export default function Jobs() {
   });
 
   useEffect(() => {
+    
+    // get userId from localStorage, if none redirect to Login page
+    
     const storedUserId = localStorage.getItem("userId");
     if (!storedUserId) {
       router.push("/login");
       return;
     }
+
+    // check for valid UserID, if none redirct to Login page
 
     const userIdNum = Number(storedUserId);
     if (!userIdNum) {
@@ -40,32 +45,55 @@ export default function Jobs() {
       return;
     }
 
+
+
+    // call API to get applications for userId
+
     fetch(`/api/jobs?userId=${userIdNum}`)
       .then(async (res) => {
         const data = await res.json();
+
+        // if response is not ok, throw error with message from response or default message
+
         if (!res.ok) {
           throw new Error(data?.error || "Unable to load job applications.");
         }
         return data;
       })
+
+      // set applications from api response, if none set to empty array
+
       .then((data) => {
         setApplications(data.applications ?? []);
       })
+      // if errror occurs, set error message from error
       .catch((err) => {
         setError(err.message || "Unable to load job applications.");
       })
+      // finally set loading to false
       .finally(() => {
         setIsLoading(false);
       });
   }, [router]);
 
+
+  // deletes application by calling API with applicationId
+
   const handleDelete = async (applicationId: number) => {
+    
+    // confirm users wants to delete
+
     if (!confirm("Are you sure you want to delete this application?")) return;
+
+    // call API to delete application, if successful remove
 
     try {
       const res = await fetch(`/api/jobs?applicationId=${applicationId}`, {
         method: "DELETE",
       });
+
+      //  if is response i not valid throw error message
+
       if (!res.ok) {
         throw new Error("Failed to delete application.");
       }
@@ -74,6 +102,8 @@ export default function Jobs() {
       setError("Failed to delete application.");
     }
   };
+  
+  // enables to the selected application to be edited 
 
   const handleEdit = (app: Application) => {
     setEditingId(app.Application_ID);
@@ -85,8 +115,12 @@ export default function Jobs() {
     });
   };
 
+  // saves the edited application 
+
   const handleSave = async () => {
     if (!editingId) return;
+      
+    // call api to update the application
 
     try {
       const res = await fetch("/api/jobs", {
@@ -100,6 +134,9 @@ export default function Jobs() {
           dateApplied: editForm.dateApplied || null,
         }),
       });
+
+      // if response is not valid throw error message
+
       if (!res.ok) {
         throw new Error("Failed to update application.");
       }
@@ -114,10 +151,14 @@ export default function Jobs() {
     }
   };
 
+  // cancels edits mode and resets the application 
+
   const handleCancel = () => {
     setEditingId(null);
   };
 
+  // if loading show loading message
+  
   if (isLoading) {
     return (
       <div className="flex-1 bg-background">
@@ -127,6 +168,8 @@ export default function Jobs() {
       </div>
     );
   }
+
+  // if error show the error message
 
   if (error) {
     return (
@@ -140,6 +183,8 @@ export default function Jobs() {
       </div>
     );
   }
+
+  // if no applications show message prompting user to add applications, otherwise show table of applications
 
   return (
     <div className="flex-1 bg-background">
