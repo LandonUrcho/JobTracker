@@ -41,6 +41,7 @@ export default function Login() {
       // Store user ID in localStorage
       localStorage.setItem("userId", user.User_ID.toString());
       localStorage.setItem("userName", user.Full_Name);
+      localStorage.setItem("Logged In", "true");
 
       // On success, redirect to dashboard
       router.push("/dashboard");

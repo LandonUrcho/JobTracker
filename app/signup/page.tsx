@@ -33,6 +33,7 @@ export default function Signup() {
       }
 
       createUser(`${firstName} ${lastName}`, email, password);
+      
 
       const user: User | null = await getUserByEmail(email);
       if (!user || user.User_Password !== password) {
@@ -44,6 +45,7 @@ export default function Signup() {
       // Store user ID in localStorage
       localStorage.setItem("userId", user.User_ID.toString());
       localStorage.setItem("userName", user.Full_Name);
+      localStorage.setItem("Logged In", "true");
 
       // On success, redirect to dashboard
       router.push("/dashboard");

@@ -2,15 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [userID, setUserID] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUserID(localStorage.getItem("userId"));
-  }, []);
+  const loggedIn = localStorage.getItem("Logged In");
 
   const isActive = (path: string) => {
     return pathname === path
@@ -20,7 +15,6 @@ export default function Navigation() {
 
   const handleLogout = () => {
     localStorage.clear();
-    setUserID(null);
   };
 
   return (
@@ -54,7 +48,7 @@ export default function Navigation() {
               Add Job
             </Link>
             <span>|</span>
-            {userID ? (
+            {loggedIn == "true" ? (
               <Link
                 href="/"
                 className={`py-2 px-3 transition-all duration-100 ${isActive("/logout")}`}

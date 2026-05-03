@@ -43,64 +43,81 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-gray-600">Loading...</p>
-        </div>
+      <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+        <p className="text-neutral-500 text-lg font-medium">Loading dashboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        {userName && (
-          <p className="text-gray-600 mb-8">Welcome back, {userName}!</p>
-        )}
-
+    <div className="min-h-screen bg-neutral-950 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          {userName && (
+            <p className="text-neutral-400 mt-2 text-lg">Welcome back, {userName}!</p>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-3xl font-bold text-blue-600">
+          <div className="bg-neutral-900 rounded-xl shadow-md border border-neutral-800 p-6 flex flex-col justify-center">
+            <div className="text-4xl font-bold text-white">
               {totalApplications}
             </div>
-            <p className="text-gray-600 mt-2">Total Applications</p>
+            <p className="text-neutral-400 font-medium mt-2">Total Applications</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-3xl font-bold text-green-600">
+          
+          <div className="bg-neutral-900 rounded-xl shadow-md border border-neutral-800 p-6 flex flex-col justify-center">
+            <div className="text-4xl font-bold text-green-400">
               {interviewsScheduled}
             </div>
-            <p className="text-gray-600 mt-2">Interviews Scheduled</p>
+            <p className="text-neutral-400 font-medium mt-2">Interviews Scheduled</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-3xl font-bold text-purple-600">
+          
+          <div className="bg-neutral-900 rounded-xl shadow-md border border-neutral-800 p-6 flex flex-col justify-center">
+            <div className="text-4xl font-bold text-purple-400">
               {offersReceived}
             </div>
-            <p className="text-gray-600 mt-2">Offers Received</p>
+            <p className="text-neutral-400 font-medium mt-2">Offers Received</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+        {/* Recent Applications Section */}
+        <div className="bg-neutral-900 rounded-xl shadow-md border border-neutral-800 p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">
             Recent Applications
           </h2>
+    
           {applications.length === 0 ? (
-            <p className="text-gray-600">
-              No recent activity yet. Start by adding your first job
-              application!
-            </p>
+            <div className="text-center py-10 bg-neutral-950 rounded-lg border border-dashed border-neutral-800">
+              <p className="text-neutral-500">
+                No recent activity yet. Start by adding your first job application!
+              </p>
+            </div>
           ) : (
             <div className="space-y-4">
               {applications.slice(0, 5).map((app) => (
                 <div
                   key={app.Application_ID}
-                  className="border-l-4 border-blue-500 pl-4 py-2"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between border-l-2 border-neutral-700 bg-neutral-950 rounded-r-lg p-4 transition-colors hover:bg-neutral-800"
                 >
-                  <p className="font-semibold text-gray-900">{app.Job_Title}</p>
-                  <p className="text-sm text-gray-600">{app.Job_Location}</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {new Date(app.Date_Created).toLocaleDateString()}
-                  </p>
+                  <div className="mb-2 sm:mb-0">
+                    <p className="font-semibold text-white text-lg">{app.Job_Title}</p>
+                    <p className="text-sm text-neutral-400">{app.Job_Location}</p>
+                  </div>
+                  <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center">
+                    <span className="inline-block px-3 py-1 text-xs font-medium bg-neutral-800 border border-neutral-700 rounded-full text-neutral-300 sm:mb-1 capitalize shadow-sm">
+                      {app.Current_Status}
+                    </span>
+                    <p className="text-xs text-neutral-500">
+                      {new Date(app.Date_Created).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
