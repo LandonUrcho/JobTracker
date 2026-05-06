@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
 
-import { getApplicationsByUser, updateApplication, deleteApplication } from "@/lib/commands";
+import {
+  getApplicationsByUser,
+  getApplicationsByUserAndStatus,
+  updateApplication,
+  deleteApplication,
+} from "@/lib/commands";
 
 // handles the get request to retrieve all applications for a user
+// accepts an optional `status` query param to filter results
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
+  const status = url.searchParams.get("status");
 
   // if userID is missing return error
 
@@ -27,9 +34,12 @@ export async function GET(request: Request) {
     );
   }
 
-  // fetch applications for the user return as json 
+  // if a status filter is provided, use the filtered JOIN query; otherwise fetch all
 
-  const applications = await getApplicationsByUser(userIdNum);
+  const applications = status
+    ? await getApplicationsByUserAndStatus(userIdNum, status)
+    : await getApplicationsByUser(userIdNum);
+
   return NextResponse.json({ applications });
 }
 

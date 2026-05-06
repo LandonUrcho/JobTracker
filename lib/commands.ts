@@ -67,13 +67,37 @@ export async function deleteUser(id: number) {
 
 export async function getApplicationsByUser(userId: number) {
   const sql = `
-    SELECT application.*, company.Company_Name
+    SELECT
+      application.*,
+      company.Company_Name,
+      company.Company_Website,
+      company.Is_Hiring
     FROM application
     INNER JOIN company ON application.Company_ID = company.Company_ID
     WHERE application.User_ID = ?
     ORDER BY application.Date_Created DESC
   `;
   const applications = db().prepare(sql).all(userId);
+  return applications;
+}
+
+export async function getApplicationsByUserAndStatus(
+  userId: number,
+  status: string,
+) {
+  const sql = `
+    SELECT
+      application.*,
+      company.Company_Name,
+      company.Company_Website,
+      company.Is_Hiring
+    FROM application
+    INNER JOIN company ON application.Company_ID = company.Company_ID
+    WHERE application.User_ID = ?
+      AND application.Current_Status = ?
+    ORDER BY application.Date_Created DESC
+  `;
+  const applications = db().prepare(sql).all(userId, status);
   return applications;
 }
 

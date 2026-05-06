@@ -1,17 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const loggedIn = typeof window !== "undefined" ? localStorage.getItem("Logged In") : null;
+
+  // Start as null so the first render matches the server (no localStorage available).
+  // After mount, read the real value from localStorage on the client only.
+  const [loggedIn, setLoggedIn] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoggedIn(localStorage.getItem("Logged In"));
+  }, []);
 
   const isActive = (path: string) => {
     return pathname === path
       ? "text-accent border-b-2 border-accent"
       : "text-foreground-secondary hover:text-foreground hover:border-b-2 hover:border-accent/50";
   };
+
 
   const handleLogout = () => {
     localStorage.clear();
