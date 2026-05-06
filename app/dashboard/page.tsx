@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getApplicationsByUser } from "@/lib/commands";
+import {
+  getApplicationsByUser,
+  getApplicationSummaryByUser,
+  type ApplicationSummary,
+} from "@/lib/commands";
 
 type Application = {
   Application_ID: number;
@@ -17,6 +21,12 @@ type Application = {
 export default function Dashboard() {
   const [userName, setUserName] = useState<string | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
+  const [summary, setSummary] = useState<ApplicationSummary>({
+    total_applications: 0,
+    interviews_scheduled: 0,
+    offers_received: 0,
+    distinct_companies: 0,
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,21 +35,21 @@ export default function Dashboard() {
 
     const userIdNum = Number(storedUserId);
 
-    // Fetch user's applications
-    getApplicationsByUser(userIdNum).then((apps) => {
+    // Fetch user's applications and aggregated summary in parallel
+    Promise.all([
+      getApplicationsByUser(userIdNum),
+      getApplicationSummaryByUser(userIdNum),
+    ]).then(([apps, stats]) => {
       setApplications(apps as Application[]);
+      setSummary(stats);
       setUserName(storedUserName);
       setIsLoading(false);
     });
   }, []);
 
-  const totalApplications = applications.length;
-  const interviewsScheduled = applications.filter(
-    (app) => app.Current_Status === "interview" || app.Current_Status === "Interview Scheduled",
-  ).length;
-  const offersReceived = applications.filter(
-    (app) => app.Current_Status === "offer" || app.Current_Status === "Offer Received",
-  ).length;
+  const totalApplications = summary.total_applications;
+  const interviewsScheduled = summary.interviews_scheduled;
+  const offersReceived = summary.offers_received;
 
   if (isLoading) {
     return (

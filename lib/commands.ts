@@ -81,6 +81,63 @@ export async function getApplicationsByUser(userId: number) {
   return applications;
 }
 
+// Aggregation + generalized projection:
+// - COUNT(*) / SUM(...) / COUNT(DISTINCT ...) are aggregate functions
+// - the CASE WHEN expressions inside SUM(...) are derived/computed columns,
+//   which is the "generalized projection" part
+export type ApplicationSummary = {
+  total_applications: number;
+  interviews_scheduled: number;
+  offers_received: number;
+  distinct_companies: number;
+};
+
+export async function getApplicationSummaryByUser(
+  userId: number,
+): Promise<ApplicationSummary> {
+  const sql = `
+    SELECT
+      COUNT(*) AS total_applications,
+      SUM(CASE WHEN LOWER(Current_Status) IN ('interview', 'interview scheduled')
+               THEN 1 ELSE 0 END) AS interviews_scheduled,
+      SUM(CASE WHEN LOWER(Current_Status) IN ('offer', 'offer received')
+               THEN 1 ELSE 0 END) AS offers_received,
+      COUNT(DISTINCT Company_ID) AS distinct_companies
+    FROM application
+    WHERE User_ID = ?
+  `;
+  const row = db().prepare(sql).get(userId) as ApplicationSummary | undefined;
+  return (
+    row ?? {
+      total_applications: 0,
+      interviews_scheduled: 0,
+      offers_received: 0,
+      distinct_companies: 0,
+    }
+  );
+}
+
+// Aggregation with GROUP BY: returns one row per status with a COUNT(*).
+export type ApplicationStatusCount = {
+  status: string;
+  total: number;
+};
+
+export async function getApplicationStatsByUser(
+  userId: number,
+): Promise<ApplicationStatusCount[]> {
+  const sql = `
+    SELECT
+      LOWER(TRIM(Current_Status)) AS status,
+      COUNT(*)                    AS total
+    FROM application
+    WHERE User_ID = ?
+    GROUP BY LOWER(TRIM(Current_Status))
+    ORDER BY total DESC
+  `;
+  return db().prepare(sql).all(userId) as ApplicationStatusCount[];
+}
+
 export async function getApplicationsByUserAndStatus(
   userId: number,
   status: string,
