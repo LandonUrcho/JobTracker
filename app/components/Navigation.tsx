@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const loggedIn = localStorage.getItem("Logged In");
+  const loggedIn = typeof window !== "undefined" ? localStorage.getItem("Logged In") : null;
 
   const isActive = (path: string) => {
     return pathname === path
